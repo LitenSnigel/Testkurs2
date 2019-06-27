@@ -26,11 +26,11 @@ public class PurchaseManagerTest {
 
     @Test
     void monthlyAverage(){
-        float [] array = {0,0,1,0,0,0,0,0,0,0,0,0};
+        float [] array = {10,0,2,0,0,0,0,0,0,0,0,0};
 
         stub.addPurchase(4, new Date(2019,3,4), 31, "monthlyAverage", 4);
-
-
+        stub.addPurchase(1, new Date(2019,1,1), 310, "monthlyAverage", 4);
+        stub.addPurchase(4, new Date(2019,3,4), 31, "monthlyAverage", 4);
 
         assertArrayEquals(array, cut.monthlyAverage(2019));     //jämför expected med avg för 2019
 
@@ -53,14 +53,16 @@ public class PurchaseManagerTest {
      void sumOfMonthMock() {
     PurchaseStore store = mock(PurchaseStore.class);
     PurchaseManager man = new PurchaseManager(store);
+    float testSUm = 600f;
 
     when(store.getPurchases(new Date(2019,1,1), new Date(2019,1,31))).thenReturn(new Purchase[]{
             new Purchase(1, new Date(2019,1,4), 100, "Star Wars Merch", 1),
             new Purchase(1, new Date(2019,1,6), 200, "Star Wars Merch", 1),
             new Purchase(1, new Date(2019,1,8), 300, "Star Wars Merch", 1)
     });
-    assertEquals(600f, man.sumOfMonth(2019,1));
+    assertEquals(testSUm, man.sumOfMonth(2019,1));
 }
+
     @Test
     void monthlyAverageMock () {
         PurchaseStore store = mock(PurchaseStore.class);
@@ -76,6 +78,32 @@ public class PurchaseManagerTest {
 
         assertArrayEquals(testArray2, man.monthlyAverage(2019));
 
+    }
+
+    @Test
+    void yearlyAvgMock() {
+        PurchaseStore store = mock(PurchaseStore.class);
+        PurchaseManager man = new PurchaseManager(store);
+
+        float[] testArray = {10,60,100};
+
+        when(store.getPurchases(new Date(2019,1,1), new Date(2019,12,31))).thenReturn(new Purchase[]{
+                new Purchase(13, new Date(2019, 11, 21), 5f, "CategoryPYearMock", 1),
+                new Purchase(1, new Date(2019, 1, 19), 3f, "CategoryPYearMock", 1),
+                new Purchase(1, new Date(2019, 1, 24), 2f, "CategoryPYearMock", 1),
+
+                new Purchase(1, new Date(2019, 1, 26), 10f, "CategoryPYearMock", 2),
+                new Purchase(1, new Date(2019, 1, 20), 50f, "CategoryPYearMock", 2),
+
+                new Purchase(1, new Date(2019, 1, 19), 100f, "CategoryPYearMock", 3)});
+
+        when(store.getAllCategories()).thenReturn(new Category[]{
+                new Category(1,"Star Wars"),
+                new Category(2,"Harry Potter"),
+                new Category(3,"The Matrix")
+        });
+
+        assertArrayEquals(testArray, man.yearlyAveragePerCategory(2019));
     }
 
     }
