@@ -74,7 +74,7 @@ public class PurchaseManagerTest {
                 new Purchase(1, new Date(2019,5,8), 30f, "Star Wars Merch", 1)
         });
 
-        assertArrayEquals(testArray2, cut.monthlyAverage(2019));
+        assertArrayEquals(testArray2, man.monthlyAverage(2019));
 
     }
 
