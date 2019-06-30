@@ -15,7 +15,14 @@ public class mainProgram {
         System.out.println();
         System.out.println(cheese.toString());
 
+        PurchaseStore store = new PurchaseStore();
+        PurchaseManager ps = new PurchaseManager(store);
+        float[] svar = ps.monthlyAverage(2019);
+        for (float s: svar
+             ) {
+            System.out.println(s);
 
+        }
 
     }
 
